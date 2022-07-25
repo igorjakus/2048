@@ -4,31 +4,7 @@
     <title>2048</title>
 </head>
 <body>
-    <canvas id="2048-game" width = "600" height="600" style="border:2px solid #000000;"></canvas>
-    <script>
-        var canvas = document.getElementById("2048-game");
-        var ctx = canvas.getContext("2d");
-
-        // background
-        ctx.fillStyle = "#ff9980";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        var padding = 15;
-        var rectx = (600 / 4) - 2*padding;
-        var recty = (600 / 4) - 2*padding;
-
-        for (let x = 0; x < 4; x += 1) {
-            for (let y = 0; y < 4; y += 1) {
-                // if ((x+y) % 2 == 0) {
-                //     ctx.fillStyle = "red"
-                // }
-                // else {
-                //     ctx.fillStyle = "green"
-                // }
-                ctx.fillStyle = "gray";
-                ctx.fillRect((x*150)+padding, (y*150)+padding, rectx, recty);
-            }
-        }
-    </script>
+    <canvas id="2048-game" width = "600" height="600"> </canvas>
+    <script src="2048.js"></script>
 </body>
 </html>
