@@ -2,13 +2,13 @@ class Game {
     constructor() {
         this.canvas = document.getElementById("2048-game");
         this.ctx = this.canvas.getContext("2d");
-        this.grid = [[0,0,0,0],
+        this.grid = [[2,2,2,0],
                      [0,0,0,0],
-                     [0,0,0,0],
-                     [0,0,0,0]];
+                     [0,16,16,0],
+                     [2,2,4,2]];    
 
-        this.addNumber();
-        this.addNumber();
+        //this.addNumber();
+        //this.addNumber();
     }
 
     addNumber() {
@@ -27,6 +27,11 @@ class Game {
 
         // add new number
         this.grid[i][j] = value
+    }
+
+    draw() {
+        this.drawBackground();
+        this.drawSquares();
     }
 
     drawBackground() {
@@ -81,8 +86,48 @@ class Game {
                 return "darkslategray";
         }
     }
+
+    move_tile(i, j, n, m) {
+        this.grid[n][m] = this.grid[i][j];
+        this.grid[i][j] = 0;
+    }
+
+    move_right() {
+        for(let i = 0; i < 4; i++) {
+            for(let j = 2; j >= 0; j--) {
+                // skips if tile == 0
+                if(this.grid[i][j] == 0) {continue;}
+    
+                for(let k = j+1; k < 4; k++) {
+                    // last tile
+                    if (k == 3) {
+                        if(this.grid[i][k] == 0) {
+                            this.move_tile(i, j, i, k);
+                        }
+                        else if(this.grid[i][k] == this.grid[i][j]) {
+                            this.move_tile(i, j, i, k);
+                            this.grid[i][k] *= 2;
+                        }
+                        else {
+                            this.move_tile(i, j, i, k-1);
+                        }
+                    }
+                    else {
+                        if(this.grid[i][k] == this.grid[i][j]) {
+                            this.move_tile(i, j, i, k);
+                            this.grid[i][k] *= 2;
+                        }
+                        if(this.grid[i][k] != 0) {
+                            this.move_tile(i, j, i, k-1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 game = new Game();
-game.drawBackground();
-game.drawSquares();
+game.draw()
+game.move_right();
+game.draw()
