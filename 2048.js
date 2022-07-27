@@ -5,7 +5,7 @@ class Game {
         this.grid = [[2,2,2,0],
                      [0,0,0,0],
                      [0,16,16,0],
-                     [2,2,4,2]];    
+                     [2,2,4,2]];   
 
         //this.addNumber();
         //this.addNumber();
@@ -87,9 +87,11 @@ class Game {
         }
     }
 
-    move_tile(i, j, n, m) {
-        this.grid[n][m] = this.grid[i][j];
-        this.grid[i][j] = 0;
+    move_tile(y1, x1, y2, x2) {
+        if (!(x1 == x2 & y1 == y2)) {
+            this.grid[y2][x2] = this.grid[y1][x1];
+            this.grid[y1][x1] = 0;
+        }
     }
 
     move_right() {
@@ -116,9 +118,11 @@ class Game {
                         if(this.grid[i][k] == this.grid[i][j]) {
                             this.move_tile(i, j, i, k);
                             this.grid[i][k] *= 2;
+                            break;
                         }
-                        if(this.grid[i][k] != 0) {
+                        else if(this.grid[i][k] != 0) {
                             this.move_tile(i, j, i, k-1);
+                            break;
                         }
                     }
                 }
