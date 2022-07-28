@@ -66,31 +66,13 @@ class Game {
     }
 
     color(x) {
-        if (x == 0) {
-            return "gainsboro"; 
-        }
-    
-        let n = Math.log2(x);
-        switch (n) {
-            case 1:
-                return "lightslategray";
-            case 2:
-                return "cadetblue";
-            case 3:
-                return "salmon";
-            case 4:
-                return "indigo";
-            case 5:
-                return "crimson";
-            default:
-                return "darkslategray";
-        }
-    }
-
-    // todo
-    movesPossible() {
-        let n = 0;
-        return n; 
+        if (x == 0) return "gainsboro";
+        else if (x == 2) return "lightslategray"; 
+        else if (x == 4) return "cadetblue"; 
+        else if (x == 8) return "salmon"; 
+        else if (x == 16) return "indigo"; 
+        else if (x == 32) return "crimson"; 
+        else return "darkslategray";
     }
 
     move_tile(y1, x1, y2, x2) {
@@ -174,10 +156,14 @@ class Game {
             }
         }
     }
+}
 
+// moze sie przydac
+function sum(array) {
+    return array.reduce((a,b) => a + b, 0);
 }
 
 game = new Game();
 game.draw()
-game.move_right();
+//game.move_right();
 game.draw()
