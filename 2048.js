@@ -4,8 +4,8 @@ class Game {
         this.ctx = this.canvas.getContext("2d");
         this.grid = [[2,2,2,0],
                      [0,0,0,0],
-                     [0,16,16,0],
-                     [2,2,4,2]];   
+                     [32,16,16,0],
+                     [0,4,2,2]];   
 
         //this.addNumber();
         //this.addNumber();
@@ -87,6 +87,12 @@ class Game {
         }
     }
 
+    // todo
+    movesPossible() {
+        let n = 0;
+        return n; 
+    }
+
     move_tile(y1, x1, y2, x2) {
         if (!(x1 == x2 & y1 == y2)) {
             this.grid[y2][x2] = this.grid[y1][x1];
@@ -94,6 +100,12 @@ class Game {
         }
     }
 
+    addTiles(y1, x1, y2, x2) {
+        this.grid[y2][x2] += this.grid[y1][x1];
+        this.grid[y1][x1] = 0;
+    }
+
+    // TODO: bug when 2 times one number adds with another tiles
     move_right() {
         for(let i = 0; i < 4; i++) {
             for(let j = 2; j >= 0; j--) {
@@ -101,14 +113,13 @@ class Game {
                 if(this.grid[i][j] == 0) {continue;}
     
                 for(let k = j+1; k < 4; k++) {
-                    // last tile
+                    // last tile, don't need to break
                     if (k == 3) {
                         if(this.grid[i][k] == 0) {
                             this.move_tile(i, j, i, k);
                         }
                         else if(this.grid[i][k] == this.grid[i][j]) {
-                            this.move_tile(i, j, i, k);
-                            this.grid[i][k] *= 2;
+                            this.addTiles(i, j, i, k);
                         }
                         else {
                             this.move_tile(i, j, i, k-1);
@@ -116,8 +127,7 @@ class Game {
                     }
                     else {
                         if(this.grid[i][k] == this.grid[i][j]) {
-                            this.move_tile(i, j, i, k);
-                            this.grid[i][k] *= 2;
+                            this.addTiles(i, j, i, k);
                             break;
                         }
                         else if(this.grid[i][k] != 0) {
@@ -129,6 +139,42 @@ class Game {
             }
         }
     }
+
+    moveLeft() {
+        for(let i = 0; i < 4; i++) {
+            for(let j = 1; j < 4; j++) {
+                // skips if tile == 0
+                if(this.grid[i][j] == 0) {continue;}
+    
+                // k is next tile
+                for(let k = j-1; k >= 0; k--) {
+                    // last tile, don't need to break
+                    if (k == 0) {
+                        if(this.grid[i][k] == 0) {
+                            this.move_tile(i, j, i, k);
+                        }
+                        else if(this.grid[i][k] == this.grid[i][j]) {
+                            this.addTiles(i, j, i, k);
+                        }
+                        else {
+                            this.move_tile(i, j, i, k+1);
+                        }
+                    }
+                    else {
+                        if(this.grid[i][k] == this.grid[i][j]) {
+                            this.addTiles(i, j, i, k);
+                            break;
+                        }
+                        else if(this.grid[i][k] != 0) {
+                            this.move_tile(i, j, i, k+1);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 game = new Game();
