@@ -83,33 +83,33 @@ class Game {
     }
 
     addTiles(y1, x1, y2, x2) {
-        this.grid[y2][x2] += this.grid[y1][x1];
+        this.grid[y2][x2] = [this.grid[y1][x1], this.grid[y1][x1]];
         this.grid[y1][x1] = 0;
     }
 
     // TODO: bug when 2 times one number adds with another tiles
     move_right() {
-        for(let i = 0; i < 4; i++) {
-            for(let j = 2; j >= 0; j--) {
+        for(let y = 0; y < 4; y++) {
+            for(let j = 3-1; j >= 0; j--) {
                 // skips if tile == 0
-                if(this.grid[i][j] == 0) {continue;}
+                if(this.grid[y][j] == 0) {continue;}
     
                 for(let k = j+1; k < 4; k++) {
                     // last tile, don't need to break
                     if (k == 3) {
-                        if(this.grid[i][k] == 0) {
-                            this.move_tile(i, j, i, k);
+                        if(this.grid[y][k] == 0) {
+                            this.move_tile(y, j, y, k);
                         }
-                        else if(this.grid[i][k] == this.grid[i][j]) {
-                            this.addTiles(i, j, i, k);
+                        else if(this.grid[i][k] == this.grid[y][j]) {
+                            this.addTiles(y, j, y, k);
                         }
                         else {
-                            this.move_tile(i, j, i, k-1);
+                            this.move_tile(y, j, y, k-1);
                         }
                     }
                     else {
-                        if(this.grid[i][k] == this.grid[i][j]) {
-                            this.addTiles(i, j, i, k);
+                        if(this.grid[y][k] == this.grid[y][j]) {
+                            this.addTiles(y, j, y, k);
                             break;
                         }
                         else if(this.grid[i][k] != 0) {
@@ -123,35 +123,45 @@ class Game {
     }
 
     moveLeft() {
-        for(let i = 0; i < 4; i++) {
-            for(let j = 1; j < 4; j++) {
+        for(let y = 0; y < 4; y++) {
+            for(let j = 0+1; j < 4; j++) {
                 // skips if tile == 0
-                if(this.grid[i][j] == 0) {continue;}
+                if(this.grid[y][j] == 0) {continue;}
     
                 // k is next tile
                 for(let k = j-1; k >= 0; k--) {
                     // last tile, don't need to break
                     if (k == 0) {
-                        if(this.grid[i][k] == 0) {
-                            this.move_tile(i, j, i, k);
+                        if(this.grid[y][k] == 0) {
+                            this.move_tile(y, j, y, k);
                         }
-                        else if(this.grid[i][k] == this.grid[i][j]) {
-                            this.addTiles(i, j, i, k);
+                        else if(this.grid[y][k] == this.grid[y][j]) {
+                            this.addTiles(y, j, y, k);
                         }
                         else {
-                            this.move_tile(i, j, i, k+1);
+                            this.move_tile(y, j, y, k+1);
                         }
                     }
                     else {
-                        if(this.grid[i][k] == this.grid[i][j]) {
-                            this.addTiles(i, j, i, k);
+                        if(this.grid[y][k] == this.grid[y][j]) {
+                            this.addTiles(y, j, y, k);  
                             break;
                         }
-                        else if(this.grid[i][k] != 0) {
-                            this.move_tile(i, j, i, k+1);
+                        else if(this.grid[y][k] != 0) {
+                            this.move_tile(y, j, y, k+1);
                             break;
                         }
                     }
+                }
+            }
+        }
+    }
+
+    cleanup() {
+        for(let x = 0; x < 4; x++) {
+            for(let y = 0; y < 4; y++) {
+                if(Array.isArray(this.grid[y][x])) {
+                    this.grid[y][x] = sum(this.grid[y][x]);
                 }
             }
         }
@@ -165,5 +175,6 @@ function sum(array) {
 
 game = new Game();
 game.draw()
-//game.move_right();
+game.moveLeft();
+game.cleanup();
 game.draw()
