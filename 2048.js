@@ -245,3 +245,5 @@ function checkKey(e) {
 
 game = new Game();
 document.onkeydown = checkKey;
+
+// todo: possibleMoves(), saving highscore, animations, optimalizing moving(?)
