@@ -24,6 +24,8 @@ class Game {
     }
 
     move(v) {
+        var previousGrid = copyArray(this.grid);
+
         // move by direction
         if (v == 'up')
             this.moveUp();
@@ -35,7 +37,11 @@ class Game {
             this.moveRight();
         
         this.cleanup();
-        this.addRandomTile();
+        
+        // if didn't move then don't add new tile
+        if (!(isEqual(previousGrid, this.grid)))
+            this.addRandomTile();
+
         this.draw();
     }
 
@@ -230,6 +236,27 @@ class Game {
 
 function sum(array) {
     return array.reduce((a,b) => a + b, 0);
+}
+
+function isEqual(a, b) {
+    // assuming that a and b have the same size
+    for(let i = 0; i < 4; i++) {
+        for(let j = 0; j < 4; j++) {
+            if(a[i][j] != b[i][j])
+                return false;
+        }
+    }
+    return true;
+}
+
+function copyArray(a) {
+    let b = [[], [], [], []];
+    for(let i = 0; i < 4; i++) {
+        for(let j = 0; j < 4; j++) {
+            b[i][j] = a[i][j];
+        }
+    }
+    return b;
 }
 
 function checkKey(e) {
