@@ -8,8 +8,8 @@ class Game {
                      [8,16,64,256]];   
 
         this.score = 0;
-        this.addNumber();
-        this.addNumber();
+        this.addRandomTile();
+        this.addRandomTile();
         this.draw();
     }
 
@@ -24,6 +24,8 @@ class Game {
     }
 
     move(v) {
+        var previousGrid = copyArray(this.grid);
+
         // move by direction
         if (v == 'up')
             this.moveUp();
@@ -35,7 +37,11 @@ class Game {
             this.moveRight();
         
         this.cleanup();
-        this.addNumber();
+        
+        // if didn't move then don't add new tile
+        if (!(isEqual(previousGrid, this.grid)))
+            this.addRandomTile();
+
         this.draw();
     }
 
@@ -44,8 +50,8 @@ class Game {
                      [0,0,0,0],
                      [0,0,0,0],
                      [0,0,0,0]];
-        this.addNumber();
-        this.addNumber();
+        this.addRandomTile();
+        this.addRandomTile();
         this.draw();
     }
 
@@ -163,7 +169,7 @@ class Game {
         }
     }
 
-    addNumber() {
+    addRandomTile() {
         // draw one of the empty tiles
         var tiles = this.emptyTiles();
         if(tiles.length == 0) 
@@ -232,6 +238,27 @@ function sum(array) {
     return array.reduce((a,b) => a + b, 0);
 }
 
+function isEqual(a, b) {
+    // assuming that a and b have the same size
+    for(let i = 0; i < 4; i++) {
+        for(let j = 0; j < 4; j++) {
+            if(a[i][j] != b[i][j])
+                return false;
+        }
+    }
+    return true;
+}
+
+function copyArray(a) {
+    let b = [[], [], [], []];
+    for(let i = 0; i < 4; i++) {
+        for(let j = 0; j < 4; j++) {
+            b[i][j] = a[i][j];
+        }
+    }
+    return b;
+}
+
 function checkKey(e) {
 
     e = e || window.event;
@@ -245,3 +272,5 @@ function checkKey(e) {
 
 game = new Game();
 document.onkeydown = checkKey;
+
+// todo: possibleMoves(), saving highscore, animations, optimalizing moving(?)
