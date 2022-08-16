@@ -8,8 +8,8 @@ class Game {
                      [8,16,64,256]];   
 
         this.score = 0;
-        this.addNumber();
-        this.addNumber();
+        this.addRandomTile();
+        this.addRandomTile();
         this.draw();
     }
 
@@ -35,7 +35,7 @@ class Game {
             this.moveRight();
         
         this.cleanup();
-        this.addNumber();
+        this.addRandomTile();
         this.draw();
     }
 
@@ -44,8 +44,8 @@ class Game {
                      [0,0,0,0],
                      [0,0,0,0],
                      [0,0,0,0]];
-        this.addNumber();
-        this.addNumber();
+        this.addRandomTile();
+        this.addRandomTile();
         this.draw();
     }
 
@@ -163,7 +163,7 @@ class Game {
         }
     }
 
-    addNumber() {
+    addRandomTile() {
         // draw one of the empty tiles
         var tiles = this.emptyTiles();
         if(tiles.length == 0) 
